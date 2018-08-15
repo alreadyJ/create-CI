@@ -178,7 +178,8 @@ jdk installation을 클릭한 후, 저는 jdk9를 사용할 것이기 때문에 
 ````
 %TOMCAT8_PATH%/conf/tomcat-users.xml
 ````
-그 전에 tomcat의 사용자에 대한 설정을 할 필요가 있습니다. 
+그 전에 tomcat의 사용자에 대한 설정을 할 필요가 있습니다. 위의 위치로 이동합니다.
+
 ````
 
 ````
