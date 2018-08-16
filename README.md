@@ -181,6 +181,64 @@ jdk installation을 클릭한 후, 저는 jdk9를 사용할 것이기 때문에 
 그 전에 tomcat의 사용자에 대한 설정을 할 필요가 있습니다. 위의 위치로 이동합니다.
 
 ````
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<role rolename="manager-jmx"/>
+<role rolename="manager-status"/>
+<role rolename="admin-gui"/>
+<role rolename="admin-script"/>
+<user username="admin" password="password" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script"/>
+````
+위 코드를 tomcat-users.xml에 붙여줍니다.
 
 ````
+http://localhost/manager/html
+````
+
+![image](https://user-images.githubusercontent.com/24931420/44132316-c57a8350-a093-11e8-8c3b-406806a1381d.png)
+
+브라우저를 이용해 위 주소로 접속을 하면 위와 같은 화면이 나옵니다.
+
+![image](https://user-images.githubusercontent.com/24931420/44132348-0a2db88c-a094-11e8-86a9-f72bca7af3f3.png)
+
+위의 admin과 password를 입력하면 접속이 가능해집니다 :)
+
+이후에 빌드 후 조치 url 부분에 톰캣 url을 입력하면 됩니다!!
+
+![image](https://user-images.githubusercontent.com/24931420/44135258-54e39f9a-a0a3-11e8-9f51-009ce0c221c2.png)
+
+저의 경우, docker container에 tomcat을 올려서 사용하려고 했습니다.
+
+![image](https://user-images.githubusercontent.com/24931420/44135345-ae70be4e-a0a3-11e8-98d4-c4f59366da52.png)
+
+ ````vboxnet0```` 이 녀석이 바로 제 컴퓨터와 docker와 연결된 NAT IP이 입니다. 외부에서는 여기로 접근하면 자동적으로 forwarding을 docker 쪽으로 해줍니다. (ifconfig 치면 나옵니다.)
+
+container에 톰캣을 올리고 작동을 시키니 역시 작동이 제대로 될리가 없습니다 :(
+
+````
+http://192.168.59.3:8080/manager/html
+````
+
+https://stackoverflow.com/questions/38172756/apache-tomcat-8-5-3-manager-app-403-error/38650401#38650401
+
+tomcat8.5 버전을 사용했는데 외부 접속시 access denied 가 발생했습니다 :( 검색을 해봤더니 velve가 켜져있어서 그런 것이라고 합니다.
+
+![image](https://user-images.githubusercontent.com/24931420/44135582-9b195990-a0a4-11e8-881e-2616ce55f3be.png)
+
+주석처리를 끝내고 다시 tomcat을 구동시켰더니 잘작동 됩니다 :)
+
+![image](https://user-images.githubusercontent.com/24931420/44137432-6e447ef2-a0ab-11e8-873a-879363ac6a05.png)
+
+url을 입력하고 이제 home으로 돌아가서 build now를 클릭하면 :) 역시나 빌드가 안됩니다.
+
+내용은 타임아웃에 의한 실패로 해석할 수 있겠네요
+
+![image](https://user-images.githubusercontent.com/24931420/44138649-89fce8ce-a0af-11e8-9473-490753dbada2.png)
+
+그래서 다시 구성의 소스코드 탭의 add 버튼을 눌러 advanced clone behaviours를 추가합니다.
+그리고 timeout을 30분으로 설정하고 다시 빌드...... 그래도 에러가 나서 직접 container에서 명령어들을 쳐봅니다.
+
+안되네요 :(
+
+아무래도 인증 문제 같습니다.
 
